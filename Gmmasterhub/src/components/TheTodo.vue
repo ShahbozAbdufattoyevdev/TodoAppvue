@@ -35,7 +35,7 @@
                         type="text"
                         placeholder="Search..."
                         v-model.trim="search"
-                        @keyup="searchList"
+                        @keypress.enter="searchTodo"
                     >
                 </div>
                 <div v-else>
@@ -120,13 +120,26 @@ export default {
             allTodo:'all',
             accTodo: 'acc',
             nAcceptTodo: 'notacc',
-            currentToDoList: []
+            currentToDoList: [],
+            search: '',
+            searchListTodo:[]
         }
     },
     methods: {
+        searchTodo(){
+            // this.searchListTodo = this.todoList.filter(res => res.title.includes(this.search))
+            this.searchListTodo = [...this.todoList]
+            this.todoList = []
+            for (let i = 0; i < this.searchListTodo.length;i++){
+                if(this.searchListTodo[i].title.includes(this.search)){
+                    this.todoList.push(this.searchListTodo[i])
+                }
+            }
+        },
          addTodo() {
             // this.idCreator = this.todoList.length
             if(this.value.length){
+                this.value = this.value[0].toUpperCase(0) + this.value.slice(1)
                 this.todoList.push({
                 id: this.idCreator,
                 title: this.value,
